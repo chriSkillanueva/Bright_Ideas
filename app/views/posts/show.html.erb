@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>User Profile</title>
+  </head>
+  <body>
+    <!-- Header -->
+    <h4 style="display:inline">Hi, <%= @user.name %></h4> |
+    <a style="display:inline" href="/bright_ideas"><button>Back to Ideas</button></a>
+    <form action="/logout" method="post" style="display:inline">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+      <input type="hidden" name="_method" value="delete">
+      <button type="submit">Log Out</button>
+    </form>
+    <hr><br>
+    <!-- Display Idea -->
+    <p><b><a href="/users/<%= @idea.user.id %>"><%= @idea.user.alias %></a> says:</b> "<%= @idea.content %>"</p>
+    <br><hr>
+    <!-- Display Users who Liked Idea -->
+    <h4>People who liked this post:</h4>
+    <table>
+      <tr>
+        <th>Alias</th>
+        <th>Name</th>
+      </tr>
+      <% @idea.users_that_liked.uniq.each do |user| %>
+      <tr>
+        <td><a href="/users/<%= user.id %>"><%= user.alias %></a></td>
+        <td><%= user.name %></td>
+      </tr>
+      <% end %>
+    </table>
+  </body>
+</html>

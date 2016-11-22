@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>User Profile</title>
+  </head>
+  <body>
+    <!-- Header -->
+    <h4 style="display:inline"><%= @current.name %></h4> |
+    <a style="display:inline" href="/bright_ideas"><button>Back to Ideas</button></a>
+    <form action="/logout" method="post" style="display:inline">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+      <input type="hidden" name="_method" value="delete">
+      <button type="submit">Log Out</button>
+    </form>
+    <hr><br>
+    <!-- User Info -->
+    <b><label>Name:</label></b> <%= @user.name %><br>
+    <b><label>Alias:</label></b> <%= @user.alias %><br>
+    <b><label>Email:</label></b> <%= @user.email %><br>
+    <br><hr>
+    <!-- User Stats -->
+    <b><label>Total Number of Ideas:</label></b> <%= @user.posts.count %><br>
+    <b><label>Total Number of Likes:</label></b> <%= @user.likes.count %>
+  </body>
+</html>

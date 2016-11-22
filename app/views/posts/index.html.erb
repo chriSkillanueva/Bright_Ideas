@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Bright Ideas</title>
+  </head>
+  <body>
+    <!-- Header -->
+    <h4 style="display:inline">Hi, <%= @user.name %></h4> |
+    <form action="/logout" method="post" style="display:inline">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+      <input type="hidden" name="_method" value="delete">
+      <button type="submit">Log Out</button>
+    </form>
+    <hr><br>
+    <!-- Error Box -->
+    <% if flash[:loser] %>
+    <p style="color:red"><%= flash[:error] %> ! </p><br>
+    <hr><br>
+    <% end %>
+    <!-- Create New Post -->
+    <h3>Create an Idea!</h3>
+    <form action="/posts" method="post">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+      <input type="hidden" name="user_id" value="<%= @user.id %>">
+      <label style="display:inline"><u>Idea:</u></label>  <p style="color:red; display:inline"><%= flash[:idea_error] %></p><br>
+      <textarea name="idea"></textarea> <br><br>
+      <input type="submit" value="Create">
+    </form>
+    <br><hr>
+    <!-- Displays Ideas Arranged by Number of Likes -->
+    <h3>Ideas</h3>
+    <% @ideas.each do |idea| %>
+    <p><b><a href="/users/<%= idea.user.id %>"><%= idea.user.alias %></a> says:</b> "<%= idea.content %>"</p>
+    <form action="/likes" method="post" style="display:inline">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+      <input type="hidden" name="user_id" value="<%= @user.id %>">
+      <input type="hidden" name="idea_id" value="<%= idea.id %>">
+      <input type="submit" value="Like">
+    </form>
+    <p style="display:inline"><a href="/bright_ideas/<%= idea.id %>"><%= idea.likes.count %> people</a> like this.</p><br><br>
+      <% if idea.user.id == @user.id %>
+    <form action="/bright_ideas/<%= idea.id %>" method="post">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+      <input type="hidden" name="_method" value="delete">
+      <button type="submit">Delete</button>
+    </form>
+      <% end %>
+    <hr>
+    <% end %>
+  </body>
+</html>
